@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 import jwt from 'jsonwebtoken';
 import {MongoServerError} from 'mongodb';
-import config from './config'
+import config from './config.js'
 
 export const auth = (req: Request, res: Response, next: NextFunction) =>{
     if(!req.headers.authorization) return next(new Error('NO_TOKEN'))
