@@ -21,3 +21,13 @@ export const login = async (req: Request, res: Response) =>{
     const token = jwt.sign({id: user._id, rol: user.role}, config.SECRET)
     res.json({token})
 }
+
+export const findUser = async (data, token) =>{
+    if(token.role === 'USER') return await User.find({id: token._id})
+    if(!data) return await User.find({})
+    try{
+        return await User.find({$or: [{name: data.name, lastname: data.lastname}, {dni: data.dni}, {email: data.email}]})
+    } catch (err){
+        throw new Error ('NOT_FOUND')
+    }
+}
