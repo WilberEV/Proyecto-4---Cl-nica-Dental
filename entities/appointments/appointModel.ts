@@ -23,7 +23,7 @@ const appointSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true,
-        enum: ['Pending', 'Canceled', 'Modified']
+        enum: ['Pending', 'Completed', 'Canceled', 'Modified']
     }
 }, {versionKey: false, timestamps: true});
 
