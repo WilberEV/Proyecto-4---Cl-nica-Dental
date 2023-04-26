@@ -14,3 +14,10 @@ export const createUser = async (data, token) => {
       throw new Error ('INVALID_CREDENTIALS')
     }
 };
+
+export const login = async (req: Request, res: Response) =>{
+    const user = await User.findOne({email: req.body.email}).select('+password');
+    if(!user || !(await bcrypt.compare(req.body.password, user.password))) throw new Error ('INVALID_CREDENTIALS');
+    const token = jwt.sign({id: user._id, rol: user.role}, config.SECRET)
+    res.json({token})
+}
