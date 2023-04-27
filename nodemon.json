@@ -2,5 +2,5 @@
     "ignore": ["dist"],
     "quiet": false,
     "ext": "js, ts, json",
-    "exec": "tsc  && node -r dotenv-safe/config ./dist/main.js"
+    "exec": "tsc  && node -r dotenv-safe/config ./dist/app.js"
 }
