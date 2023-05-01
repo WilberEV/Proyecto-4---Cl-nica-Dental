@@ -5,7 +5,7 @@ declare global {
     export interface Request {
       payload:{
         id: String,
-        rol: String
+        role: String
       };
     }
   }
