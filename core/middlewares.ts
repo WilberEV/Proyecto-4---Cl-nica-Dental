@@ -27,6 +27,10 @@ export const errorHandler = (err: Error | MongoServerError, req: Request, res: R
    if(err.message === 'INVALID_CREDENTIALS') return res.status(403).json({error: 'INVALID_CREDENTIALS'})
    if(err.message === 'NOT_FOUND') return res.status(404).json({error: 'NOT_FOUND'})
    if(err.message === 'INVALID_PASSWORD') return res.status(422).json({error: 'INVALID_PASSWORD'})
+   if(err.message === 'NOT_AUTHORIZED') return res.status(401).json({error: 'NOT_AUTHORIZED'})
+   if(err.message === 'MISSING_DATA') return res.status(400).json({error: 'MISSING_DATA'})
+   if(err.message === 'DUPLICATED_DATE') return res.status(400).json({error: 'DUPLICATED_DATE'})
+   
    if(err instanceof MongoServerError && err.code === 11000) return res.status(422).json({error: 'DUPLICATE_ENTITY', entities: Object.keys(err.keyPatter)})
    //Unknown Error
    console.error(err);

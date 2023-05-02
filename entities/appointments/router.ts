@@ -2,10 +2,9 @@ import express from "express";
 import { createAppointment, listAppointments, updateAppointment, deleteAppointment } from "./controller.js";
 import { auth } from "../../core/middlewares.js";
 
-export const router = express.Router();
+const router = express.Router();
 
 // Crear cita
-
 router.post("/", auth, async (req, res, next) => {
   try {
     res.json(await createAppointment(req.body, req.payload));
@@ -14,7 +13,7 @@ router.post("/", auth, async (req, res, next) => {
   }
 });
 
-// Ver lista de citas
+// Ver lista de citas. Filtrado opcional por usuario y rango de fechas.
 router.get("/", async (req, res, next) => {
   try {
     const appointments = await listAppointments(req.query.start as string, req.query.end as string, req.payload?.id);
@@ -24,6 +23,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// Editar cita
 router.patch('/:id', auth, async (req, res, next) =>{
   try {
     res.json(await updateAppointment(req.params.id, req.body, req.payload))
@@ -32,6 +32,7 @@ router.patch('/:id', auth, async (req, res, next) =>{
   }
 })
 
+// Borrar cita. Marca una cita como desactiva y ésta deja de ser visible.
 router.delete('/:id', auth, async (req, res, next) =>{
   try {
     await deleteAppointment(req.params, req.payload)
@@ -40,3 +41,5 @@ router.delete('/:id', auth, async (req, res, next) =>{
     next (e)
   }
 })
+
+export default router
