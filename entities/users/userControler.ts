@@ -38,11 +38,10 @@ export const login = async (req: Request, res: Response) => {
 };
 
 /////Find user/////
-export const findUser = async (ID, data, token) => {
+export const findUser = async (ID, token) => {
   if (token.role !== "ADMIN") {
     return await User.findById({ _id: token.id });
   }
-
   try {
     return await User.findOne({ dni: ID });
   } catch (err) {
