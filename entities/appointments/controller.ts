@@ -6,7 +6,7 @@ import {Appointment, IAppointment} from "./model.js";
 export const createAppointment = async (data: IAppointment, token) => {
 // Validamos que la petición tenga la información necesaria, y el cliente la autorización.
   if (!data || !data.start || !data.end || !data.doctor || !data.client) throw new Error('MISSING_DATA');
-  if (data.doctor !== token.id && data.client !== token.id) throw new Error('NOT_AUTHORIZED');
+  if (data.doctor !== token.id && data.client !== token.id && token.role !== 'ADMIN') throw new Error('NOT_AUTHORIZED');
 // Comprobamos que no hay citas para ese doctor en el horario solicitado
   const overlap = await listAppointments(data.start, data.end, data.doctor);
   if (overlap.length) throw new Error("DUPLICATED_DATE");
