@@ -3,24 +3,23 @@ import config from "../../core/config.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { tokenGenerator } from "../../core/middlewares.js";
+
 
 /////Create user/////
-export const createUser = async (req: Request, res: Response) => {
-  req.payload = jwt.verify(tokenGenerator(req, res), config.SECRET);
+export const createUser = async (data, token) => {
   if (
-    !req.body.password ||
-    req.body.password.length < 6 ||
-    req.body.password.length > 12
+    !data.password ||
+    data.password.length < 6 ||
+    data.password.length > 12
   )
     throw new Error("INVALID_PASSWORD");
   try {
-    req.body.password = await bcrypt.hash(
-      req.body.password,
+    data.password = await bcrypt.hash(
+      data.password,
       config.HASH_ROUNDS
     );
-    if (req.payload.role !== "ADMIN") req.body.role = "USER";
-    const user = await User.create(req.body);
+    if (token.role !== "ADMIN") data.role = "USER";
+    const user = await User.create(data);
     await user.save();
     return user;
   } catch (err) {
@@ -40,39 +39,38 @@ export const login = async (req: Request, res: Response) => {
 };
 
 /////Find user/////
-export const findUser = async (req: Request, res: Response) => {
-  req.payload = jwt.verify(tokenGenerator(req, res), config.SECRET);
-  if (req.payload.role !== "ADMIN") {
-    return await User.findById({ _id: req.payload.id });
+export const findUser = async (ID, data, token) => {
+  if (token.role !== "ADMIN") {
+    return await User.findById({ _id: ID });
   }
-  if (!req.body) return await User.find({});
+  if (!data) return await User.find({});
   try {
-    return await User.findOne({ dni: req.params.dni });
+    return await User.findOne({ dni: ID });
   } catch (err) {
     throw new Error("NOT_FOUND");
   }
 };
 
 /////Update user/////
-export const updateUser = async (req: Request, res: Response) => {
-  req.payload = jwt.verify(tokenGenerator(req, res), config.SECRET);
-  req.body.password = await bcrypt.hash(req.body.password, config.HASH_ROUNDS);
-  if (req.payload.role !== "ADMIN") {
+export const updateUser = async (ID, data, token) => {
+  console.log(token, '///')
+  data.password = await bcrypt.hash(data.password, config.HASH_ROUNDS);
+  if (token.role !== "ADMIN") {
     return await User.findByIdAndUpdate(
-      { _id: req.payload.id },
+      { _id: token.id },
       {
-        email: req.body.email,
-        phone: req.body.phone,
-        password: req.body.password,
+        email: data.email,
+        phone: data.phone,
+        password: data.password,
       },
       { new: true }
     );
   }
-  const user = await User.findOne({ dni: req.params.dni });
+  const user = await User.findOne({ dni: ID });
   if (!user) throw new Error("NOT_FOUND");
   return await User.findOneAndUpdate(
-    { dni: req.params.dni },
-    req.body,
+    { dni: ID },
+    data,
     { new: true }
   );
 };
