@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import config from './core/config.js';
 import userRouter from "./entities/users/userRouter.js";
+import appRouter from "./entities/appointments/router.js"
 
 
 
@@ -20,5 +21,6 @@ mongoose
 
 app.use(express.json());
 app.use('/user', userRouter);
+app.use('/appointments', appRouter)
 
 app.listen(config.PORT, () => console.log(`Servidor levantado en ${config.PORT}`));
