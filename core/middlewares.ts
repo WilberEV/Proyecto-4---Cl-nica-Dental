@@ -4,17 +4,14 @@ import {MongoServerError} from 'mongodb';
 import config from './config.js'
 
 
-export const tokenGenerator = (req: Request, res: Response) =>{
+export const auth = (req: Request, res: Response, next) =>{
     let token: string | undefined = req.headers.authorization;
     if(!token) {
       return res.status(401).json({error: 'NO_TOKEN'})
     }
-    return token = token.split(' ')[1]
-}
-
-export const auth = (req: Request, res: Response, next) =>{
+    token = token.split(' ')[1]
     try{
-        req.payload = jwt.verify(tokenGenerator(req, res), config.SECRET);
+        req.payload = jwt.verify(token, config.SECRET);
         next();
     } catch(e){
         return next(new Error('INVALID_CREDENTIALS'))
