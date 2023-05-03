@@ -20,7 +20,6 @@ export const createUser = async (data, token) => {
     );
     if (token.role !== "ADMIN") data.role = "USER";
     const user = await User.create(data);
-    await user.save();
     return user;
   } catch (err) {
     throw new Error("INVALID_CREDENTIALS");
@@ -41,9 +40,9 @@ export const login = async (req: Request, res: Response) => {
 /////Find user/////
 export const findUser = async (ID, data, token) => {
   if (token.role !== "ADMIN") {
-    return await User.findById({ _id: ID });
+    return await User.findById({ _id: token.id });
   }
-  if (!data) return await User.find({});
+
   try {
     return await User.findOne({ dni: ID });
   } catch (err) {
@@ -53,7 +52,6 @@ export const findUser = async (ID, data, token) => {
 
 /////Update user/////
 export const updateUser = async (ID, data, token) => {
-  console.log(token, '///')
   data.password = await bcrypt.hash(data.password, config.HASH_ROUNDS);
   if (token.role !== "ADMIN") {
     return await User.findByIdAndUpdate(

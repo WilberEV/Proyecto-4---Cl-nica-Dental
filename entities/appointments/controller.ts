@@ -6,7 +6,7 @@ import {Appointment, IAppointment} from "./model.js";
 export const createAppointment = async (data: IAppointment, token) => {
 // Validamos que la petición tenga la información necesaria, y el cliente la autorización.
   if (!data || !data.start || !data.end || !data.doctor || !data.client) throw new Error('MISSING_DATA');
-  if (data.doctor !== token.id && data.client !== token.id) throw new Error('NOT_AUTHORIZED');
+  if (data.doctor !== token.id && data.client !== token.id && token.role !== 'ADMIN') throw new Error('NOT_AUTHORIZED');
 // Comprobamos que no hay citas para ese doctor en el horario solicitado
   const overlap = await listAppointments(data.start, data.end, data.doctor);
   if (overlap.length) throw new Error("DUPLICATED_DATE");
@@ -14,15 +14,15 @@ export const createAppointment = async (data: IAppointment, token) => {
 };
 
 // Sacar lista de citas que incluyen opcionalmente la id del usuario o un intervalo de tiempo
-export const listAppointments = async (start?: string, end?: string, id?: string) => {
+export const listAppointments = async (start?: Date, end?: Date, id?: string) => {
 // Creamos un filtro con los criterios opcionales
   const filter: any = {active: true}
   if (id) filter.$or = [{ client: id }, { doctor: id }];
-  if (start && !end) filter.end = { $gte: start }
-  if (end && !start) filter.start = { $lte: end }
+  if (start && !end) filter.end = { $gte: new Date(start) }
+  if (end && !start) filter.start = { $lte: new Date(end) }
   if (start && end) {
-    filter.start = [{ $gte: start}, { $lte: end}]
-    filter.end = [{ $gte: start }, { $lte: end }]
+    filter.start = [{ $gte: start.toDateString()}, { $lte: end.toDateString()}]
+    filter.end = [{ $gte: start.toDateString() }, { $lte: end.toDateString() }]
   }
   return Appointment.find(filter);
 }
