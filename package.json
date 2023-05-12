@@ -5,7 +5,9 @@
   "main": "mainjs",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node -r dotenv-safe/config ./dist/app.js",
+    "start_dev": "nodemon"
   },
   "author": "",
   "license": "ISC",
