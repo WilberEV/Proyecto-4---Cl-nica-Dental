@@ -29,8 +29,8 @@ export const Appointment = mongoose.model(
 );
 
 export interface IAppointment {
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   client: string;
   doctor: string;
 }

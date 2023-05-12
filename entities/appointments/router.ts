@@ -16,7 +16,7 @@ router.post("/", auth, async (req, res, next) => {
 // Ver lista de citas. Filtrado opcional por usuario y rango de fechas.
 router.get("/", async (req, res, next) => {
   try {
-    const appointments = await listAppointments(req.query.start, req.query.end, req.payload?.id);
+    const appointments = await listAppointments(req.query.start as string, req.query.end as string, req.payload?.id);
     res.json(appointments);
   } catch (e) {
     next(e);

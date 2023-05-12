@@ -30,6 +30,7 @@ userRouter.get('/:dni', auth, async (req: Request, res: Response, next: NextFunc
     }
 })
 
+
 userRouter.put('/:dni',auth, async (req: Request, res: Response, next: NextFunction) =>{
     try{
         res.json(await updateUser(req.params.dni, req.body, req.payload))

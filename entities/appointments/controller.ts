@@ -14,15 +14,15 @@ export const createAppointment = async (data: IAppointment, token) => {
 };
 
 // Sacar lista de citas que incluyen opcionalmente la id del usuario o un intervalo de tiempo
-export const listAppointments = async (start?: Date, end?: Date, id?: string) => {
+export const listAppointments = async (start?: string, end?: string, id?: string) => {
 // Creamos un filtro con los criterios opcionales
   const filter: any = {active: true}
   if (id) filter.$or = [{ client: id }, { doctor: id }];
-  if (start && !end) filter.end = { $gte: new Date(start) }
-  if (end && !start) filter.start = { $lte: new Date(end) }
+  if (start && !end) filter.end = { $gte: start }
+  if (end && !start) filter.start = { $lte: end }
   if (start && end) {
-    filter.start = [{ $gte: start.toDateString()}, { $lte: end.toDateString()}]
-    filter.end = [{ $gte: start.toDateString() }, { $lte: end.toDateString() }]
+    filter.start = [{ $gte: start}, { $lte: end}]
+    filter.end = [{ $gte: start }, { $lte: end }]
   }
   return Appointment.find(filter);
 }
