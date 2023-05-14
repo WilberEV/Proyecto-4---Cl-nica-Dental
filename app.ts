@@ -10,8 +10,7 @@ import cors from 'cors'
 
 const app = express();
 
-mongoose
-  .connect("mongodb://127.0.0.1:27017/dentist")
+mongoose.connect(config.DB_URL)
   .then(() => {
     console.log("Conectado a la base de datos");
   })
