@@ -5,7 +5,7 @@ import { auth } from "../../core/middlewares.js";
 
 const userRouter = express.Router()
 
-userRouter.post('/', auth, async(req: Request, res: Response, next: NextFunction) => {
+userRouter.post('/', async(req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(await createUser(req.body, req.payload))
     } catch(e){

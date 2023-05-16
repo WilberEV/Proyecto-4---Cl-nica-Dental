@@ -9,12 +9,15 @@ export const tokenGenerator = (req: Request, res: Response) =>{
     if(!token) {
       return res.status(401).json({error: 'NO_TOKEN'})
     }
-    return token = token.split(' ')[1]
+    token = token.split(' ')[1]
+    console.log(token, '/////token////')
+    return token
 }
 
 export const auth = (req: Request, res: Response, next) =>{
     try{
         req.payload = jwt.verify(tokenGenerator(req, res), config.SECRET);
+        console.log(req.payload, '/////req.payload/////')
         next();
     } catch(e){
         return next(new Error('INVALID_CREDENTIALS'))
@@ -23,6 +26,7 @@ export const auth = (req: Request, res: Response, next) =>{
 
 
 export const errorHandler = (err: Error | MongoServerError, req: Request, res: Response, next: NextFunction) =>{
+    console.log(err, '/////////')
    if(err.message === 'NO_TOKEN') return res.status(401).json({error: 'NO_TOKEN'})
    if(err.message === 'INVALID_CREDENTIALS') return res.status(403).json({error: 'INVALID_CREDENTIALS'})
    if(err.message === 'NOT_FOUND') return res.status(404).json({error: 'NOT_FOUND'})
