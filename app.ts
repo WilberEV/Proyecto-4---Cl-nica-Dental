@@ -32,5 +32,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use('/user', userRouter);
 app.use('/appointments', appRouter)
+app.get('/',(req, res)=>(res.send('OK////////////////////////////')))
+
 
 app.listen(config.PORT, () => console.log(`Servidor levantado en ${config.PORT}`));

@@ -46,7 +46,7 @@ export const findUser = async (ID, token) => {
     if(ID === 'DOCTOR' || ID === 'ADMIN' || ID === 'USER'){
       return await User.find({role: ID})
     }
-    return await User.findOne({ dni: ID });
+    return await User.findOne({ _id: ID });
   } catch (err) {
     throw new Error("NOT_FOUND");
   }

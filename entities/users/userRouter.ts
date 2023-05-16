@@ -22,9 +22,9 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
     }
 }) 
 
-userRouter.get('/:dni', auth, async (req: Request, res: Response, next: NextFunction) =>{
+userRouter.get('/:id', auth, async (req: Request, res: Response, next: NextFunction) =>{
     try{
-        res.json(await findUser(req.params.dni, req.payload))
+        res.json(await findUser(req.params.id, req.payload))
     } catch(e){
         next(e)
     }
