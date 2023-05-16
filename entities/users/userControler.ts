@@ -18,7 +18,6 @@ export const createUser = async (data, token) => {
       data.password,
       config.HASH_ROUNDS
     );
-    if (token.role !== "ADMIN") data.role = "USER";
     const user = await User.create(data);
     return user;
   } catch (err) {
