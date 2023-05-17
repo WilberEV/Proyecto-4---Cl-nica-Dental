@@ -6,7 +6,7 @@ import { Request, Response } from "express";
 
 
 /////Create user/////
-export const createUser = async (data, token) => {
+export const createUser = async (data) => {
   if (
     !data.password ||
     data.password.length < 6 ||
@@ -45,7 +45,7 @@ export const findUser = async (ID, token) => {
     if(ID === 'DOCTOR' || ID === 'ADMIN' || ID === 'USER'){
       return await User.find({role: ID})
     }
-    return await User.findOne({ _id: ID });
+    return await User.findOne({ email: ID });
   } catch (err) {
     throw new Error("NOT_FOUND");
   }

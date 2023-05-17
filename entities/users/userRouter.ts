@@ -7,7 +7,7 @@ const userRouter = express.Router()
 
 userRouter.post('/', async(req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(await createUser(req.body, req.payload))
+        res.json(await createUser(req.body))
     } catch(e){
         next(e)
     }
