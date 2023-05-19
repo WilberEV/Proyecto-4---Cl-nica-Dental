@@ -54,11 +54,10 @@ export const findUser = async (ID, token) => {
 };
 
 /////Update user/////
-export const updateUser = async (ID, data, token) => {
+export const updateUser = async (data, token) => {
   data.password = await bcrypt.hash(data.password, config.HASH_ROUNDS);
   if (token.role !== "ADMIN") {
-    return await User.findByIdAndUpdate(
-      { _id: token.id },
+    return await User.updateOne(
       {
         email: data.email,
         phone: data.phone,
@@ -67,10 +66,7 @@ export const updateUser = async (ID, data, token) => {
       { new: true }
     );
   }
-  const user = await User.findOne({ email: ID });
-  if (!user) throw new Error("NOT_FOUND");
-  return await User.findOneAndUpdate(
-    { email: ID },
+  return await User.updateOne(
     data,
     { new: true }
   );
