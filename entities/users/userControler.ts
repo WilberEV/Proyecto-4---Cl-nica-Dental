@@ -67,6 +67,13 @@ export const updateUser = async (ID, data, token) => {
       { new: true }
     );
   }
+  if (ID === token.id){
+    return await User.findOneAndUpdate(
+      { _id: token.id },
+      data,
+      { new: true }
+    );
+  }
   return await User.findOneAndUpdate(
     { email: ID},
     data,
