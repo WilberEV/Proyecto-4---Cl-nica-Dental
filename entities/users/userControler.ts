@@ -45,7 +45,9 @@ export const findUser = async (ID, token) => {
     if(ID === 'DOCTOR' || ID === 'ADMIN' || ID === 'USER'){
       return await User.find({role: ID})
     }
-    return await User.find({ email: ID });
+    if (ID === token.id){
+      return await User.findById({ _id: token.id })
+    } else return await User.find({ email: ID });
   } catch (err) {
     throw new Error("NOT_FOUND");
   }
@@ -65,10 +67,10 @@ export const updateUser = async (ID, data, token) => {
       { new: true }
     );
   }
-  const user = await User.findOne({ dni: ID });
+  const user = await User.findOne({ email: ID });
   if (!user) throw new Error("NOT_FOUND");
   return await User.findOneAndUpdate(
-    { dni: ID },
+    { email: ID },
     data,
     { new: true }
   );
