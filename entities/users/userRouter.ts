@@ -31,7 +31,7 @@ userRouter.get('/:id', auth, async (req: Request, res: Response, next: NextFunct
 })
 
 
-userRouter.put('/:dni',auth, async (req: Request, res: Response, next: NextFunction) =>{
+userRouter.put('/:dni', async (req: Request, res: Response, next: NextFunction) =>{
     try{
         res.json(await updateUser(req.params.id, req.body, req.payload))
     } catch(e){
