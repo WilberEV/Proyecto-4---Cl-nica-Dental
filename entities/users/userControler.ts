@@ -74,13 +74,17 @@ export const updateUser = async (ID, data, token) => {
   if (ID === token.id){
     return await User.findOneAndUpdate(
       { _id: token.id },
-      data,
+      { 
+        email: data.email,
+        phone: data.phone,
+        password: data.password,
+      },
       { new: true }
     );
   }
   return await User.findOneAndUpdate(
     { email: ID},
-    data,
+    {data},
     { new: true }
   );
 };
