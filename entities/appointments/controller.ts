@@ -18,14 +18,14 @@ export const createAppointment = async (data, token) => {
 };
 
 // Sacar lista de citas que incluyen opcionalmente la id del usuario o un intervalo de tiempo
-export const listAppointments = async (start?: String, end?: String, id?) => {
-  if (id.role === "ADMIN") {
-    return Appointment.find()
+export const listAppointments = async (start?: String, end?: String, token?) => {
+  if (token.role === "ADMIN"){
+    return Appointment.find({})
   }
   const filter: any = { $and: [{ active: true }] };
-  if (id) filter.$and.push({ $or: [{ client: id }, { doctor: id }] });
-  if (start && !end) filter.$and.push({ end: { $gte: start } });
-  if (end && !start) filter.$and.push({ start: [{ $lte: end }] });
+  if (token.id) filter.$and.push({ $or: [{ client: token.id }, { doctor: token.id }] });
+  if (start !=='' && end === '') filter.$and.push({ end: { $gte: start } });
+  if (end !== '' && start === '') filter.$and.push({ start: [{ $lte: end }] });
   if (start && end)
     filter.$and.push({ end: { $gte: start } }, { start: { $lte: end } });
 
