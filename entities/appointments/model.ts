@@ -14,11 +14,11 @@ export const Appointment = mongoose.model(
       ref: "User",
     },
     start: {
-      type: Date,
+      type: String,
       required: true,
     },
     end: {
-      type: Date,
+      type: String,
       required: true,
     },
     active: {
