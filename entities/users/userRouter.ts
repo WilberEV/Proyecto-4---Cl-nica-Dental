@@ -31,8 +31,9 @@ userRouter.get('/:id', auth, async (req: Request, res: Response, next: NextFunct
 })
 
 
-userRouter.put('/:id', async (req: Request, res: Response, next: NextFunction) =>{
+userRouter.put('/:id', auth, async (req: Request, res: Response, next: NextFunction) =>{
     try{
+        console.log(req.payload, '////req.payload////')
         res.json(await updateUser(req.params.id, req.body, req.payload))
     } catch(e){
         next(e)
