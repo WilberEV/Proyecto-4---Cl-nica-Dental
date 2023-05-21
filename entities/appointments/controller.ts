@@ -41,7 +41,7 @@ export const updateAppointment = async (appID, data, token) => {
   const updatedValues = (({start, end, doctor}) => ({start, end, doctor}))(data)
   const overlap = await listAppointments(data.start, data.end, data.doctor)
   if (overlap.length) throw new Error('DUPLICATED_DATE')
-  return Appointment.findOneAndUpdate({appID}, updatedValues, {new: true})
+  return Appointment.findOneAndUpdate({ _id: appID}, updatedValues, {new: true})
 }
 
 // Borrar cita
