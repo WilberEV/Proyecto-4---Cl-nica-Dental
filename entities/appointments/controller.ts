@@ -17,6 +17,11 @@ export const createAppointment = async (data, token) => {
   return Appointment.create(data);
 };
 
+
+
+
+
+
 // Sacar lista de citas que incluyen opcionalmente la id del usuario o un intervalo de tiempo
 export const listAppointments = async (start?: String, end?: String, token?) => {
   if (token.role === "ADMIN"){
@@ -31,6 +36,12 @@ export const listAppointments = async (start?: String, end?: String, token?) => 
 
   return Appointment.find(filter);
 };
+
+
+
+
+
+
 
 // Actualizar cita
 export const updateAppointment = async (appID, data, token) => {

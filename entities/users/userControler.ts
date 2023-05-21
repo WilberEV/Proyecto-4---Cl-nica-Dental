@@ -39,6 +39,9 @@ export const login = async (req: Request, res: Response) => {
 /////Find user/////
 export const findUser = async (ID, token) => {
   if (token.role !== "ADMIN") {
+    if(ID === 'DOCTOR'){
+      return await User.find({role: ID})
+    }
     return await User.findById({ _id: token.id });
   }
   try {
