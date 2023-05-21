@@ -35,22 +35,14 @@ export const listAppointments = async (start?: String, end?: String, token?) => 
 // Actualizar cita
 export const updateAppointment = async (appID, data, token) => {
   // Comprobamos si la cita a actualizar existe, y validamos la autorización del usuario.
-  const appointment = await Appointment.findById({ _id: appID });
-  if (!appointment) throw new Error("NOT_FOUND");
-  if (
-    (token.id !== appointment.client || token.id !== appointment.doctor) &&
-    token.role !== "ADMIN"
-  )
-    throw new Error("NOT_AUTHORIZED");
-  // Desestructuramos la edición que nos han solicitado para descartar claves no deseadas
-  const updatedValues = (({ start, end, doctor }) => ({ start, end, doctor }))(
-    data
-  );
-  // Comprobamos que la nueva versión de la cita no pise una cita ya existente en términos de doctor y fecha
-  const overlap = await listAppointments(data.start, data.end, data.doctor);
-  if (overlap.length) throw new Error("DUPLICATED_DATE");
-  return Appointment.findOneAndUpdate(appID, updatedValues, { new: true });
-};
+  const appointment = await Appointment.findOne({_id: appID})
+  if (!appointment) throw new Error('NOT_FOUND')
+  if ((token.id !== appointment.client || token.id !== appointment.doctor) && token.role !== 'ADMIN') throw new Error('NOT_AUTHORIZED')
+  const updatedValues = (({start, end, doctor}) => ({start, end, doctor}))(data)
+  const overlap = await listAppointments(data.start, data.end, data.doctor)
+  if (overlap.length) throw new Error('DUPLICATED_DATE')
+  return Appointment.findOneAndUpdate({appID}, updatedValues, {new: true})
+}
 
 // Borrar cita
 export const deleteAppointment = async (appID, token) => {
