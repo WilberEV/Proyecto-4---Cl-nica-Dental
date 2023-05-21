@@ -48,9 +48,8 @@ export const findUser = async (ID, token) => {
     if(ID === 'DOCTOR' || ID === 'ADMIN' || ID === 'USER'){
       return await User.find({role: ID})
     }
-    if (ID === token.id){
-      return await User.findById({ _id: token.id })
-    } else return await User.find({ email: ID });
+    return await User.find({ _id: ID });
+
   } catch (err) {
     throw new Error("NOT_FOUND");
   }
@@ -74,19 +73,8 @@ export const updateUser = async (ID, data, token) => {
     );
     
   }
-  if (ID === token.id){
-    return await User.findOneAndUpdate(
-      { _id: token.id },
-      { 
-        email: data.email,
-        phone: data.phone,
-        password: data.password,
-      },
-      { new: true }
-    );
-  }
   return await User.findOneAndUpdate(
-    { email: ID},
+    { _id: ID},
     {data},
     { new: true }
   );
