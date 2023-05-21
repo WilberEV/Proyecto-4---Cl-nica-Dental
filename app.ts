@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import config from './core/config.js';
 import userRouter from "./entities/users/userRouter.js";
 import appRouter from "./entities/appointments/router.js"
+import treatmentRouter from "./entities/treatments/router.js";
 import cors from 'cors'
 
 
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use('/user', userRouter);
 app.use('/appointments', appRouter)
+app.use('/treatment', treatmentRouter);
 app.get('/',(req, res)=>(res.send('OK////////////////////////////')))
 
 
