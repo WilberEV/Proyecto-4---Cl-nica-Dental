@@ -75,7 +75,7 @@ export const updateUser = async (ID, data, token) => {
   }
   return await User.findOneAndUpdate(
     { _id: ID},
-    {data},
+    data,
     { new: true }
   );
 };
