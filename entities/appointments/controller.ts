@@ -35,7 +35,7 @@ export const listAppointments = async (start?: String, end?: String, token?) => 
 // Actualizar cita
 export const updateAppointment = async (appID, data, token) => {
   // Comprobamos si la cita a actualizar existe, y validamos la autorización del usuario.
-  const appointment = await Appointment.findOne({ id: appID });
+  const appointment = await Appointment.findById({ _id: appID });
   if (!appointment) throw new Error("NOT_FOUND");
   if (
     (token.id !== appointment.client || token.id !== appointment.doctor) &&
