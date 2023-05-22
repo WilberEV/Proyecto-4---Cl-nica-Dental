@@ -42,7 +42,7 @@ export const findUser = async (ID, token) => {
     if(ID === 'DOCTOR'){
       return await User.find({role: ID})
     }
-    return await User.findById({ _id: token.id });
+    return await User.find({ _id: token.id });
   }
   try {
     if(ID === 'DOCTOR' || ID === 'ADMIN' || ID === 'USER'){
